@@ -1,13 +1,13 @@
+# Add some activation functions
+
 import numpy as np
 import nnfs
 from nnfs.datasets import spiral_data
-
 nnfs.init()
 
 
 # Dense layer
 class Layer_Dense:
-
     # Layer initialization
     def __init__(self, n_inputs, n_neurons):
         # Initialize weights and biases
@@ -16,32 +16,29 @@ class Layer_Dense:
 
     # Forward pass
     def forward(self, inputs):
+        print('Dense.forward()')
         # Calculate output values from inputs, weights and biases
         self.output = np.dot(inputs, self.weights) + self.biases
 
 
 # ReLU activation
 class Activation_ReLU:
-
     # Forward pass
     def forward(self, inputs):
+        print('ReLU.forward()')
         # Calculate output values from inputs
         self.output = np.maximum(0, inputs)
 
 
-
 # Softmax activation
 class Activation_Softmax:
-
     # Forward pass
     def forward(self, inputs):
-
+        print('Softmax.forward()')
         # Get unnormalized probabilities
-        exp_values = np.exp(inputs - np.max(inputs, axis=1,
-                                            keepdims=True))
+        exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
         # Normalize them for each sample
-        probabilities = exp_values / np.sum(exp_values, axis=1,
-                                            keepdims=True)
+        probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
 
         self.output = probabilities
 
@@ -64,6 +61,7 @@ activation2 = Activation_Softmax()
 
 # Make a forward pass of our training data through this layer
 dense1.forward(X)
+print(f'{dense1.output.shape=}')
 
 # Make a forward pass through activation function
 # it takes the output of first dense layer here

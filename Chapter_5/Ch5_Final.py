@@ -1,7 +1,8 @@
+# Add loss functions
+
 import numpy as np
 import nnfs
 from nnfs.datasets import spiral_data
-
 nnfs.init()
 
 
@@ -29,7 +30,6 @@ class Activation_ReLU:
         self.output = np.maximum(0, inputs)
 
 
-
 # Softmax activation
 class Activation_Softmax:
 
@@ -37,8 +37,7 @@ class Activation_Softmax:
     def forward(self, inputs):
 
         # Get unnormalized probabilities
-        exp_values = np.exp(inputs - np.max(inputs, axis=1,
-                                            keepdims=True))
+        exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
         # Normalize them for each sample
         probabilities = exp_values / np.sum(exp_values, axis=1,
                                             keepdims=True)
@@ -76,7 +75,6 @@ class Loss_CategoricalCrossentropy(Loss):
         # Clip both sides to not drag mean towards any value
         y_pred_clipped = np.clip(y_pred, 1e-7, 1 - 1e-7)
 
-
         # Probabilities for target values -
         # only if categorical labels
         if len(y_true.shape) == 1:
@@ -95,7 +93,6 @@ class Loss_CategoricalCrossentropy(Loss):
         # Losses
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
-
 
 
 # Create dataset

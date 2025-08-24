@@ -3,6 +3,7 @@
 import numpy as np
 import nnfs
 from nnfs.datasets import spiral_data
+
 nnfs.init()
 
 
@@ -39,8 +40,7 @@ class Activation_Softmax:
         # Get unnormalized probabilities
         exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
         # Normalize them for each sample
-        probabilities = exp_values / np.sum(exp_values, axis=1,
-                                            keepdims=True)
+        probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
 
         self.output = probabilities
 
@@ -78,17 +78,11 @@ class Loss_CategoricalCrossentropy(Loss):
         # Probabilities for target values -
         # only if categorical labels
         if len(y_true.shape) == 1:
-            correct_confidences = y_pred_clipped[
-                range(samples),
-                y_true
-            ]
+            correct_confidences = y_pred_clipped[range(samples), y_true]
 
         # Mask values - only for one-hot encoded labels
         elif len(y_true.shape) == 2:
-            correct_confidences = np.sum(
-                y_pred_clipped*y_true,
-                axis=1
-            )
+            correct_confidences = np.sum(y_pred_clipped * y_true, axis=1)
 
         # Losses
         negative_log_likelihoods = -np.log(correct_confidences)
@@ -138,10 +132,10 @@ print(activation2.output[:5])
 loss = loss_function.calculate(activation2.output, y)
 
 # Print loss value
-print('loss:', loss)
+print("loss:", loss)
 
 
-'''
+"""
 >>>
 [[0.33333334 0.33333334 0.33333334]
  [0.33333316 0.3333332  0.33333364]
@@ -149,4 +143,4 @@ print('loss:', loss)
  [0.3333326  0.33333263 0.33333477]
  [0.33333233 0.3333324  0.33333528]]
 loss: 1.0986104
-'''
+"""

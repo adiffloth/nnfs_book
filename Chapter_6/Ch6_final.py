@@ -35,11 +35,9 @@ class Activation_Softmax:
     # Forward pass
     def forward(self, inputs):
         # Get unnormalized probabilities
-        exp_values = np.exp(inputs - np.max(inputs, axis=1,
-                                            keepdims=True))
+        exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
         # Normalize them for each sample
-        probabilities = exp_values / np.sum(exp_values, axis=1,
-                                            keepdims=True)
+        probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
 
         self.output = probabilities
 
@@ -77,17 +75,11 @@ class Loss_CategoricalCrossentropy(Loss):
         # Probabilities for target values -
         # only if categorical labels
         if len(y_true.shape) == 1:
-            correct_confidences = y_pred_clipped[
-                range(samples),
-                y_true
-            ]
+            correct_confidences = y_pred_clipped[range(samples), y_true]
 
         # Mask values - only for one-hot encoded labels
         elif len(y_true.shape) == 2:
-            correct_confidences = np.sum(
-                y_pred_clipped*y_true,
-                axis=1
-            )
+            correct_confidences = np.sum(y_pred_clipped * y_true, axis=1)
 
         # Losses
         negative_log_likelihoods = -np.log(correct_confidences)
@@ -138,8 +130,14 @@ for iteration in range(10000):
 
     # If loss is smaller - print and save weights and biases aside
     if loss < lowest_loss:
-        print('New set of weights found, iteration:', iteration,
-              'loss:', loss, 'acc:', accuracy)
+        print(
+            "New set of weights found, iteration:",
+            iteration,
+            "loss:",
+            loss,
+            "acc:",
+            accuracy,
+        )
         best_dense1_weights = dense1.weights.copy()
         best_dense1_biases = dense1.biases.copy()
         best_dense2_weights = dense2.weights.copy()

@@ -29,13 +29,11 @@ class Activation_ReLU:
         self.output = np.maximum(0, inputs)
 
 
-
 # Softmax activation
 class Activation_Softmax:
 
     # Forward pass
     def forward(self, inputs):
-
         # Get unnormalized probabilities
         exp_values = np.exp(inputs - np.max(inputs, axis=1,
                                             keepdims=True))
@@ -76,7 +74,6 @@ class Loss_CategoricalCrossentropy(Loss):
         # Clip both sides to not drag mean towards any value
         y_pred_clipped = np.clip(y_pred, 1e-7, 1 - 1e-7)
 
-
         # Probabilities for target values -
         # only if categorical labels
         if len(y_true.shape) == 1:
@@ -95,10 +92,10 @@ class Loss_CategoricalCrossentropy(Loss):
         # Losses
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
-        
-        
+
+
 # Create dataset
-X, y = vertical_data(samples=100, classes=3)
+X, y = spiral_data(samples=100, classes=3)
 
 # Create model
 dense1 = Layer_Dense(2, 3)  # first dense layer, 2 inputs
@@ -134,11 +131,10 @@ for iteration in range(10000):
     # it takes the output of second dense layer here and returns loss
     loss = loss_function.calculate(activation2.output, y)
 
-
     # Calculate accuracy from output of activation2 and targets
     # calculate values along first axis
     predictions = np.argmax(activation2.output, axis=1)
-    accuracy = np.mean(predictions==y)
+    accuracy = np.mean(predictions == y)
 
     # If loss is smaller - print and save weights and biases aside
     if loss < lowest_loss:
